@@ -1,0 +1,28 @@
+{
+  "name": "urn2/nx-log",
+  "description": "log for nx",
+  "homepage": "https://github.com/urn2/nx",
+  "type": "framework",
+  "authors": [
+    {
+      "name": "Vea",
+      "homepage": "https://www.uper.net",
+      "email": "vea@live.cn"
+    }
+  ],
+  "require": {
+    "php": ">=8.2",
+    "psr/log": "^3.0"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "nx\\parts\\": [
+        "src/parts/"
+      ],
+      "nx\\helpers\\": [
+        "src/helpers/"
+      ]
+    }
+  }
+}
