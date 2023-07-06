@@ -1,35 +1,41 @@
 <?php
-/** @noinspection PhpUndefinedClassInspection */
 
 namespace nx\helpers;
 
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class log extends NullLogger{
-	protected bool $deferred = false;
-	protected array $logs = [];
 	protected array $writers = [];
-	protected float $start =0;
-	public function __construct($deferred = false){
-		$this->deferred = $deferred;
-		$this->start =microtime(true);
+	protected array $deferredLogs = [];
+	protected array $deferredWriters = [];
+	protected float $start = 0;
+	public function __construct($start = 0){
+		$this->start = 0 === $start ? microtime(true) : $start;
 	}
 	public function __destruct(){
-		if($this->deferred && !empty($this->logs)){
-			foreach($this->writers as $logger){
-				$logger($this->logs, true);
+		if(!empty($this->deferredWriters)){
+			foreach($this->deferredWriters as $logger){
+				$logger($this->deferredLogs);
 			}
 		}
 	}
-	public function addWriter(callable $writer, string $name = 'default'): void{
-		$this->writers[$name] = $writer;
-		var_dump('log writers: ', count($this->writers));
+	/**
+	 * 添加多个日志处理方法
+	 *
+	 * @param callable $writer   回调方法
+	 * @param string   $name     名称，默认为 default 可覆盖
+	 * @param bool     $deferred 是否延期输出 true 为解构时， false 立刻
+	 * @return void
+	 */
+	public function addWriter(callable $writer, string $name = 'default', bool $deferred = false): void{
+		unset($this->deferredWriters[$name], $this->writers[$name]);
+		if($deferred) $this->deferredWriters[$name] = $writer;
+		else $this->writers[$name] = $writer;
 	}
 	/**
 	 * 用上下文信息替换记录信息中的占位符
 	 */
-	static public function interpolate($message, array $context = []): string{
+	public static function interpolate($message, array $context = []): string{
 		$replaces = [];
 		foreach($context as $key => $val){
 			if(is_bool($val)){
@@ -56,17 +62,23 @@ class log extends NullLogger{
 	 * @param array $context
 	 */
 	public function log($level, $message, array $context = []): void{
-		$log = [
-			'ms'=>microtime(true) -$this->start,
-			'timestamp' => time(),
-			'level' => $level,
-			'message' => $message,
-			'context' => $context,
-		];
-		if($this->deferred){
-			$this->logs[] = $log;
+		if(!empty($this->deferredWriters)){
+			$this->deferredLogs[] = [
+				'ms' => microtime(true) - $this->start,
+				'timestamp' => time(),
+				'level' => $level,
+				'message' => $message,
+				'context' => $context,
+			];
 		}
-		else{
+		if(!empty($this->writers)){
+			$log = [
+				'ms' => microtime(true) - $this->start,
+				'timestamp' => time(),
+				'level' => $level,
+				'message' => $message,
+				'context' => $context,
+			];
 			foreach($this->writers as $logger){
 				$logger($log);
 			}

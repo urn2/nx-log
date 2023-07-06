@@ -9,7 +9,8 @@ log for nx
 use \nx\parts\log\file;
 use \nx\parts\log\dump;
 class app extends \nx\app{
-    use file,dump  
+    use file,dump;
+    public $log_dump_name='dump';
 }
 ```
 
