@@ -3,7 +3,7 @@
 log for nx
 
 
-> composer require urn2/nx-log
+> composer require veasin/nx-log
 
 ```php
 use \nx\parts\log\file;

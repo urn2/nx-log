@@ -13,9 +13,7 @@ trait dump{
 
 	protected function nx_parts_log_dump(): void{
 		if(PHP_SAPI !== 'cli') return;
-		if(null === $this->log){
-			$this->log = new \nx\helpers\log();
-		}
+		$this->nx_parts_log();
 		$this->log->addWriter($this->log_dump_writer(...),
 			$this->log_dump_name ?? 'default',
 			$this->log_dump_deferred ?? false

@@ -11,12 +11,10 @@ trait log{
 	/**
 	 * info级别log
 	 *
-	 * @param        $message
-	 * @param array  $context
-	 * @param string $level
+	 * @param mixed ...$args
 	 * @return void
 	 */
-	public function log($message, array $context = [], string $level='info'): void{
-		$this->log->log($level, $message, $context);
+	public function log(...$args): void{
+		$this->log->log('info', null, $args);
 	}
 }

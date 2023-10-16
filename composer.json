@@ -1,7 +1,7 @@
 {
-  "name": "urn2/nx-log",
+  "name": "veasin/nx-log",
   "description": "log for nx",
-  "homepage": "https://github.com/urn2/nx",
+  "homepage": "https://github.com/veasin/nx",
   "type": "framework",
   "authors": [
     {
@@ -14,7 +14,6 @@
     "php": ">=8.2",
     "psr/log": "^3.0"
   },
-  "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
       "nx\\parts\\": [
@@ -24,5 +23,38 @@
         "src/helpers/"
       ]
     }
+  },
+  "minimum-stability":"dev",
+  "repositories":[
+    {
+      "type":"path",
+      "url":"/codes/me/nx-container/",
+      "options":{
+        "versions":{
+          "veasin/nx-container":"0.0.1-dev"
+        }
+      }
+    },
+    {
+      "type":"path",
+      "url":"/codes/me/nx-io/",
+      "options":{
+        "versions":{
+          "veasin/nx-io":"0.0.1-dev"
+        }
+      }
+    },
+    {
+      "type":"path",
+      "url":"/codes/me/nx/",
+      "options":{
+        "versions":{
+          "veasin/nx":"0.0.1-dev"
+        }
+      }
+    }
+  ],
+  "require-dev": {
+    "veasin/nx": "*"
   }
 }
