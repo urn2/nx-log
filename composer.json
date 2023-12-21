@@ -24,36 +24,6 @@
       ]
     }
   },
-  "minimum-stability":"dev",
-  "repositories":[
-    {
-      "type":"path",
-      "url":"/codes/me/nx-container/",
-      "options":{
-        "versions":{
-          "veasin/nx-container":"0.0.1-dev"
-        }
-      }
-    },
-    {
-      "type":"path",
-      "url":"/codes/me/nx-io/",
-      "options":{
-        "versions":{
-          "veasin/nx-io":"0.0.1-dev"
-        }
-      }
-    },
-    {
-      "type":"path",
-      "url":"/codes/me/nx/",
-      "options":{
-        "versions":{
-          "veasin/nx":"0.0.1-dev"
-        }
-      }
-    }
-  ],
   "require-dev": {
     "veasin/nx": "*"
   }

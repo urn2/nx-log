@@ -21,7 +21,7 @@ trait file{
 			$deferred
 		);
 		$setup = $this['log/file'] ?? [];
-		$path = $setup['path'] ?? $this->getPath('./logs/');
+		$path = $setup['path'] ?? $this->getPath('../logs/');
 		$name = date($setup['name'] ?? 'Y-m-d');
 		$this['log/file:list']=[];
 		if(!$deferred){
