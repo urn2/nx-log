@@ -78,7 +78,6 @@ class log extends NullLogger{
 				'level' => $level,
 				'message' => $message,
 				'context' => $context,
-				'trace' =>$this->backtrace(),
 			];
 		}
 		if(!empty($this->writers)){
@@ -88,57 +87,10 @@ class log extends NullLogger{
 				'level' => $level,
 				'message' => $message,
 				'context' => $context,
-				'trace' =>$this->backtrace(),
 			];
 			foreach($this->writers as $logger){
 				$logger($log);
 			}
 		}
-	}
-	protected function backtrace($max=10):array{
-		$dbt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $max);
-		$start = 0;//$this->log()
-		$count =count($dbt)-1;
-		//定位到 __class__->log()
-		while(!('log' === $dbt[$start]['function'] && __CLASS__ ===$dbt[$start]['class'])){
-			$start += 1;
-			if($start >$count) break;
-		}
-		if($start >$count){//$this->log->debug() <-- 未定位成功，重置
-			$start =0;
-			while("Psr\Log\AbstractLogger" !==$dbt[$start]['class']){
-				$start += 1;
-				if($start >$count) break;
-			}
-			if($start >$count){//$this->log->log() <-- 未定位成功，重置
-				$start =0;
-				while(__CLASS__ !==$dbt[$start]['class']){
-					$start += 1;
-					if($start >$count) break;
-				}
-			}
-		}
-		if($start<$count){//跳过 trait 或 自行封装的方法
-			while('log' === $dbt[$start]['function'] || '__call' === $dbt[$start]['function']){
-				$start += 1;
-				if($start >$count) break;
-			}
-		}
-		//array_walk($dbt, function($t, $k){
-		//	printf("%s %s:%s %s%s%s()\n", $k, $t['file'] ?? '', $t['line'] ?? '', $t['class'] ?? '', $t['type'] ?? '', $t['function'] ?? '');
-		//
-		//});
-		$r= [
-			'file'=>$dbt[$start-1]['file'] ?? '',
-			'line'=>$dbt[$start-1]['line'] ?? 0,
-			'class'=>$dbt[$start]['class'] ?? '',
-			'type'=>$dbt[$start]['type'] ?? '',
-			'function'=>$dbt[$start]['function'] ?? '',
-		];
-		//var_dump($r);
-		return $r;
-		//var_dump($start);
-		//
-		//return $dbt;
 	}
 }

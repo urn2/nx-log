@@ -6,13 +6,12 @@
   "authors": [
     {
       "name": "Vea",
-      "homepage": "https://www.uper.net",
       "email": "vea@live.cn"
     }
   ],
   "require": {
     "php": ">=8.2",
-    "psr/log": "^3.0"
+    "psr/log": ">=3.0"
   },
   "autoload": {
     "psr-4": {
